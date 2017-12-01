@@ -1,4 +1,4 @@
-package it.polito.verifoo.rest.test;
+package test;
 
 import static org.junit.Assert.*;
 
