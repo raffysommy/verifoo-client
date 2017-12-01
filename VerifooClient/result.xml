@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<NFV xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/netgroup-polito/verifoo/rest-service/xsd/nfvInfo.xsd">
+    <graphs>
+        <graph id="0">
+            <node name="nodeA" functional_type="WEBCLIENT">
+                <neighbour name="node1"/>
+                <configuration name="confA" description="A simple description">
+                    <webclient nameWebServer="nodeB"/>
+                </configuration>
+            </node>
+            <node name="node1" functional_type="FIREWALL">
+                <neighbour name="nodeA"/>
+                <neighbour name="node2"/>
+                <configuration name="conf1" description="A simple description">
+                    <firewall>
+                        <elements>
+                            <source>nodeC</source>
+                            <destination>nodeC</destination>
+                        </elements>
+                    </firewall>
+                </configuration>
+            </node>
+            <node name="node2" functional_type="CACHE">
+                <neighbour name="node1"/>
+                <neighbour name="nodeB"/>
+                <configuration name="conf2" description="A simple description">
+                    <cache>
+                        <resource>nodeA</resource>
+                        <resource>node1</resource>
+                    </cache>
+                </configuration>
+            </node>
+            <node name="nodeB" functional_type="WEBSERVER">
+                <neighbour name="node2"/>
+                <configuration name="confB" description="A simple description">
+                    <webserver>
+                        <name>nodeB</name>
+                    </webserver>
+                </configuration>
+            </node>
+        </graph>
+    </graphs>
+    <CapacityDefinition>
+        <CapacityForNode node="node1" capacity="10"/>
+        <CapacityForNode node="node2" capacity="10"/>
+    </CapacityDefinition>
+    <PropertyDefinition>
+        <Property name="IsolationProperty" isSat="true" graph="0"/>
+    </PropertyDefinition>
+    <Hosts>
+        <Host name="hostA" diskStorage="10" type="CLIENT"/>
+        <Host name="host1" diskStorage="10" type="MIDDLEBOX"/>
+        <Host name="host2" diskStorage="10" type="MIDDLEBOX" active="true">
+            <NodeRef node="node1"/>
+        </Host>
+        <Host name="host3" diskStorage="10" type="MIDDLEBOX" active="true">
+            <NodeRef node="node2"/>
+        </Host>
+        <Host name="hostB" diskStorage="10" type="SERVER"/>
+    </Hosts>
+    <Connections>
+        <Connection sourceHost="hostA" destHost="host1" avgLatency="-1"/>
+        <Connection sourceHost="hostA" destHost="host2" avgLatency="-100"/>
+        <Connection sourceHost="host1" destHost="host2" avgLatency="-1"/>
+        <Connection sourceHost="host1" destHost="host3" avgLatency="-100"/>
+        <Connection sourceHost="host2" destHost="host1" avgLatency="-1"/>
+        <Connection sourceHost="host3" destHost="host2" avgLatency="-1"/>
+        <Connection sourceHost="host2" destHost="host3" avgLatency="-1"/>
+        <Connection sourceHost="host2" destHost="hostB" avgLatency="-100"/>
+        <Connection sourceHost="host3" destHost="hostB" avgLatency="-1"/>
+    </Connections>
+    <ParsingString></ParsingString>
+</NFV>
