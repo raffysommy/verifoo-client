@@ -1,7 +1,4 @@
-/**
- * 
- */
-package test;
+package test.java;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.After;
@@ -20,38 +18,21 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * @author Raffaele
- *
- */
-public class TestRestDeployment {
-	private static String service="http://restfoo.eu-de.mybluemix.net/rest";
+public class TestRestConverter {
+	private static String service="http://restfoo.eu-de.mybluemix.net/translate";
 
-
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 	}
 
-	/**
-	 * @throws java.lang.Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 	}
@@ -67,6 +48,18 @@ public class TestRestDeployment {
 		assertTrue(res.readEntity(String.class).contains("[org.xml.sax.SAXParseException: Content is not allowed in prolog.]"));
 	}
 	@Test
+	public void TestValidConversionRequest() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/nfv5nodes7hostsSAT-WEBwithParsingString.xml")).collect(Collectors.joining("\n"));
+		Response res = ClientBuilder.newClient()
+				.target(service)
+				.request(MediaType.APPLICATION_XML)
+				.accept(MediaType.APPLICATION_XML)
+				.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.OK.getStatusCode(), res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("NodeRef"));
+
+	}
+	@Test
 	public void TestValidVoidXMLRequest() {
 		javax.ws.rs.core.Response res=ClientBuilder.newClient()
 			.target(service)
@@ -75,6 +68,17 @@ public class TestRestDeployment {
 			.post(Entity.entity("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",MediaType.APPLICATION_XML));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
 		assertTrue(res.readEntity(String.class).contains("[org.xml.sax.SAXParseException: Premature end of file.]"));
+	}
+	@Test
+	public void TestInvalidConversionRequest() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/nfv5nodes7hostsSAT-WEBwithInvParsingString.xml")).collect(Collectors.joining("\n"));
+		Response res = ClientBuilder.newClient()
+				.target(service)
+				.request(MediaType.APPLICATION_XML)
+				.accept(MediaType.APPLICATION_XML)
+				.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.OK.getStatusCode(), res.getStatus());
+		assertFalse(res.readEntity(String.class).contains("NodeRef"));
 	}
 	@Test
 	public void TestInvalidGetRequest() {
@@ -102,16 +106,5 @@ public class TestRestDeployment {
 			.accept(MediaType.APPLICATION_XML)
 			.delete();
 		assertEquals(Status.METHOD_NOT_ALLOWED.getStatusCode(),res.getStatus());
-	}
-	@Test
-	public void TestValidRequest() throws IOException {
-		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/nfv3nodes3hostsSAT-MAIL.xml")).collect(Collectors.joining("\n"));
-		javax.ws.rs.core.Response res=ClientBuilder.newClient()
-			.target(service)
-			.request(MediaType.APPLICATION_XML)
-			.accept(MediaType.APPLICATION_XML)
-			.post(Entity.entity(xmlread, MediaType.APPLICATION_XML));
-		assertEquals(Status.OK.getStatusCode(),res.getStatus());
-		assertTrue(res.readEntity(String.class).contains("isSat=\"true\""));
 	}
 }
