@@ -114,4 +114,82 @@ public class TestRestDeployment {
 		assertEquals(Status.OK.getStatusCode(),res.getStatus());
 		assertTrue(res.readEntity(String.class).contains("isSat=\"true\""));
 	}
+	@Test
+	public void TestXMLWithoutGraphRequest() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWithoutGraph.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("Invalid content was found starting with element 'Hosts'. One of '{graphs}' is expected."));
+	}
+	@Test
+	public void TestXMLWithoutHostsRequest() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWithoutHosts.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("The content of element 'Hosts' is not complete. One of '{Host}' is expected."));
+	}
+	@Test
+	public void TestXMLWithoutConnectionRequest() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWithoutConnection.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("The content of element 'Connections' is not complete. One of '{Connection}' is expected."));
+	}
+	@Test
+	public void TestXMLWith2Host() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWith2Host.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.OK.getStatusCode(),res.getStatus());
+		assertFalse(res.readEntity(String.class).contains("NodeRef"));
+	}
+	@Test
+	public void TestXMLWith1Host() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWith1Host.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("Error in NFFG"));
+	}
+	@Test
+	public void TestXMLWithHostNoClientServer() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWithHostNoClientServer.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("Error in NFFG"));
+	}
+	@Test
+	public void TestXMLWith2Host2Node() throws IOException {
+		String xmlread=java.nio.file.Files.lines(Paths.get("./testfile/XmlWith2Host2Node.xml")).collect(Collectors.joining("\n"));
+		javax.ws.rs.core.Response res=ClientBuilder.newClient()
+			.target(service)
+			.request(MediaType.APPLICATION_XML)
+			.accept(MediaType.APPLICATION_XML)
+			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
+		assertEquals(Status.OK.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("NodeRef"));
+	}
+
 }
