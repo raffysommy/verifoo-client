@@ -25,7 +25,7 @@ import org.junit.Test;
  *
  */
 public class TestRestDeployment {
-	private static String service="http://restfoo.eu-de.mybluemix.net/rest";
+	private static String service="http://restfoo.eu-de.mybluemix.net/deployment";
 
 
 	/**

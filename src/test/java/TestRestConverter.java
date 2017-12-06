@@ -19,7 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestRestConverter {
-	private static String service="http://restfoo.eu-de.mybluemix.net/translate";
+	private static String service="http://restfoo.eu-de.mybluemix.net/converter";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
