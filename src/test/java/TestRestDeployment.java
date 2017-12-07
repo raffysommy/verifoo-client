@@ -155,8 +155,8 @@ public class TestRestDeployment {
 			.request(MediaType.APPLICATION_XML)
 			.accept(MediaType.APPLICATION_XML)
 			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
-		assertEquals(Status.OK.getStatusCode(),res.getStatus());
-		assertFalse(res.readEntity(String.class).contains("NodeRef"));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("Error in input XML: At least one middle host has to be defined"));
 	}
 	@Test
 	public void TestXMLWith1Host() throws IOException {
@@ -167,7 +167,7 @@ public class TestRestDeployment {
 			.accept(MediaType.APPLICATION_XML)
 			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
-		assertTrue(res.readEntity(String.class).contains("Error in NFFG"));
+		assertTrue(res.readEntity(String.class).contains("Error in input XML: Only one client and one server are allowed in the physical network"));
 	}
 	@Test
 	public void TestXMLWithHostNoClientServer() throws IOException {
@@ -178,7 +178,7 @@ public class TestRestDeployment {
 			.accept(MediaType.APPLICATION_XML)
 			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
 		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
-		assertTrue(res.readEntity(String.class).contains("Error in NFFG"));
+		assertTrue(res.readEntity(String.class).contains("Error in input XML: Only one client and one server are allowed in the physical network"));
 	}
 	@Test
 	public void TestXMLWith2Host2Node() throws IOException {
@@ -188,8 +188,8 @@ public class TestRestDeployment {
 			.request(MediaType.APPLICATION_XML)
 			.accept(MediaType.APPLICATION_XML)
 			.post(Entity.entity(xmlread,MediaType.APPLICATION_XML));
-		assertEquals(Status.OK.getStatusCode(),res.getStatus());
-		assertTrue(res.readEntity(String.class).contains("NodeRef"));
+		assertEquals(Status.BAD_REQUEST.getStatusCode(),res.getStatus());
+		assertTrue(res.readEntity(String.class).contains("Error in input XML: At least one middle host has to be defined"));
 	}
 
 }
