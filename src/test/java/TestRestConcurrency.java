@@ -27,6 +27,8 @@ public class TestRestConcurrency {
     private final static int THREAD_COUNT = 5;
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		//just give a moment to a webservice :D
+		Thread.sleep(10000);
 	}
 
 	@AfterClass
