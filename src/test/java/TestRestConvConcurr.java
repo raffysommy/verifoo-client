@@ -3,7 +3,6 @@ package test.java;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
