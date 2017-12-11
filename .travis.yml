@@ -10,3 +10,6 @@ deploy:
   file: target/VerifooClient-0.0.1-jar-with-dependencies.jar
   on:
     repo: raffysommy/verifoo-client
+    branch: master
+    tags: true
+    all_branches: true
