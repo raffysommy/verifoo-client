@@ -7,7 +7,7 @@ deploy:
   provider: releases
   api_key:
     secure: HNFCXaH/cS3W5Nb5PpKq5f2O6QF03kLFBwIe5KgUX9qmTQO80zrUfhNSJfjju6TtWdfRzGPoU6VRoyjq0bnZ/lU5xAcKra0r1k1WIoGz+eaN7qXCB0xN0kYGch0936O1kNjE2bgFrjFh5euT0YlNHPJh8n+WmUKMQlyLLyvnkanCfhV59s5MRlFa71L8wPCX900pwIcExDd2mG/A8Q93SKpPS0QT6jwnxLTUdn0qLfrzEz/NmanENZvQi168Ru5Hq+H2zvwOXJ6dJzVNqr+ejEFXoxipytrC/sUXD8DLFQF+gdCN4WX7pIFBdDzow5XmhW3X7Jd3EFvMHAOf74YNM2jytfZdabtmr/ip5JYcqJFu58d3i1Hx0sZU5LMNr6ZQZUe2mb1+aJwmevN+66BOi9HvXMjst7UQ/yXS8M+j2Y7L+FvI2ISAZgkQvH9N9O9heWqGbRkj0PW6ImgN1i8pvGW2eKOTFQiR1D2WxHOQxxkQPjfpQ1m8go/ZNZ4TE/JzxmU0v3wZB1eNk1uQXgyGHiI1/iMU6Q+XoQei/im5+Svz7vOAlhSP/wcrKdOZVX0OTFCwLGxXbn8sxKlLl0tS+hxFxYe7+R+lyYeMagbNM/TyL/ozSn4pS7MAI9nOtwATGpTM73qHAND4wKbkB0uVGzhiv83/OJz4J9ruOGfJx0I=
-  file: target/VerifooClient-0.0.1-jar-with-dependencies.jar
+  file: "target/VerifooClient-0.0.1-jar-with-dependencies.jar"
   on:
     repo: raffysommy/verifoo-client
     branch: master
